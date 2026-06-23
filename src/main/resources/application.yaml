@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: DocumentService
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/document_service_db}
+    username: ${DB_USER:user}
+    password: ${DB_PASSWORD:password}
+
+minio:
+  endpoint: ${MINIO_ENDPOINT:http://localhost:9000}
+  access-key: ${MINIO_ACCESS_KEY:user}
+  secret-key: ${MINIO_SECRET_KEY:password}
+
+document:
+  template-bucket: ${TEMPLATE_BUCKET:templates}
+  document-bucket: ${DOCUMENT_BUCKET:documents}
+  placeholder-regex: ${PLACEHOLDER_REGEX:"\\{\\{(\\w+):(\\w+)\\}\\}"}

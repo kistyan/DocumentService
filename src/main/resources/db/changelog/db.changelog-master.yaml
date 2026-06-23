@@ -1,0 +1,6 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/2026-06-23-create-table-templates.yaml
+
+  - include:
+      file: db/changelog/2026-06-23-create-table-documents.yaml
