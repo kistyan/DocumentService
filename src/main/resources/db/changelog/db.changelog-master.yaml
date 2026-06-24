@@ -4,3 +4,6 @@ databaseChangeLog:
 
   - include:
       file: db/changelog/2026-06-23-create-table-documents.yaml
+
+  - include:
+      file: db/changelog/2026-06-24-insert-work-acceptance-act-template.yaml

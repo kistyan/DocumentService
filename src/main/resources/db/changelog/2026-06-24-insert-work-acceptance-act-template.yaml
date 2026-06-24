@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2026-06-24-insert-work-acceptance-act-template
+      author: kistyan
+      changes:
+        - insert:
+            tableName: templates
+            columns:
+              - column:
+                  name: name
+                  value: WORK_ACCEPTANCE_ACT
+              - column:
+                  name: path
+                  value: "work_acceptance_act.docx"
