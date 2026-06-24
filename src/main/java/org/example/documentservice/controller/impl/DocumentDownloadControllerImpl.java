@@ -2,8 +2,12 @@ package org.example.documentservice.controller.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.example.documentservice.controller.DocumentDownloadController;
+import org.example.documentservice.exception.DocumentFileNotFoundException;
+import org.example.documentservice.exception.DocumentNotFoundException;
 import org.example.documentservice.service.DocumentService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,5 +25,15 @@ public class DocumentDownloadControllerImpl implements DocumentDownloadControlle
   @GetMapping("/{documentId}")
   public ResponseEntity<byte[]> download(@PathVariable UUID documentId) {
     return ResponseEntity.ok(documentService.download(documentId));
+  }
+
+  @ExceptionHandler({
+      DocumentNotFoundException.class,
+      DocumentFileNotFoundException.class
+  })
+  public ResponseEntity<String> handleNotFound(Exception exception) {
+    return ResponseEntity
+        .status(HttpStatus.NOT_FOUND)
+        .body(exception.getMessage());
   }
 }
