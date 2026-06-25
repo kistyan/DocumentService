@@ -1,11 +1,13 @@
 package org.example.documentservice.controller.impl;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.documentservice.controller.WorkAcceptanceActController;
 import org.example.documentservice.dto.request.WorkAcceptanceActRequest;
 import org.example.documentservice.service.WorkAcceptanceActService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,7 +21,8 @@ public class WorkAcceptanceActControllerImpl  implements WorkAcceptanceActContro
 
   @Override
   @PostMapping
-  public ResponseEntity<UUID> generate(WorkAcceptanceActRequest request) {
+  public ResponseEntity<UUID> generate(@RequestBody @Valid WorkAcceptanceActRequest request) {
+    System.out.println(request);
     return ResponseEntity.ok(workAcceptanceActService.generate(request));
   }
 }

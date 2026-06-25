@@ -1,9 +1,9 @@
 package org.example.documentservice.utils;
 
 import com.github.petrovich4j.Case;
-import com.github.petrovich4j.Gender;
 import com.github.petrovich4j.NameType;
 import com.github.petrovich4j.Petrovich;
+import org.example.documentservice.enums.Gender;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -44,21 +44,22 @@ class NameUtilsTest {
   @Test
   void getGenitiveFullName_WhenHasPatronymic() {
     String lastName = "Альшаев", firstName = "Константин", patronymic = "Николаевич";
-    boolean isMale = true;
+    Gender gender = Gender.MALE;
+    com.github.petrovich4j.Gender genderValue = gender.getGender();
     String expected = "Альшаева Константина Николаевича";
 
-    Mockito.when(petrovich.say(lastName, NameType.LastName, Gender.Male, Case.Genitive))
+    Mockito.when(petrovich.say(lastName, NameType.LastName, genderValue, Case.Genitive))
         .thenReturn("Альшаева");
-    Mockito.when(petrovich.say(firstName, NameType.FirstName, Gender.Male, Case.Genitive))
+    Mockito.when(petrovich.say(firstName, NameType.FirstName, genderValue, Case.Genitive))
         .thenReturn("Константина");
-    Mockito.when(petrovich.say(patronymic, NameType.PatronymicName, Gender.Male, Case.Genitive))
+    Mockito.when(petrovich.say(patronymic, NameType.PatronymicName, genderValue, Case.Genitive))
         .thenReturn("Николаевича");
 
     String actual = nameUtils.getGenitiveFullName(
         firstName,
         lastName,
         patronymic,
-        isMale
+        gender
     );
 
     assertEquals(expected, actual);
@@ -67,19 +68,20 @@ class NameUtilsTest {
   @Test
   void getGenitiveFullName_WhenNoPatronymic() {
     String lastName = "Альшаев", firstName = "Константин", patronymic = null;
-    boolean isMale = true;
+    Gender gender = Gender.MALE;
+    com.github.petrovich4j.Gender genderValue = gender.getGender();
     String expected = "Альшаева Константина";
 
-    Mockito.when(petrovich.say(lastName, NameType.LastName, Gender.Male, Case.Genitive))
+    Mockito.when(petrovich.say(lastName, NameType.LastName, genderValue, Case.Genitive))
         .thenReturn("Альшаева");
-    Mockito.when(petrovich.say(firstName, NameType.FirstName, Gender.Male, Case.Genitive))
+    Mockito.when(petrovich.say(firstName, NameType.FirstName, genderValue, Case.Genitive))
         .thenReturn("Константина");
 
     String actual = nameUtils.getGenitiveFullName(
         firstName,
         lastName,
         patronymic,
-        isMale
+        gender
     );
 
     assertEquals(expected, actual);
