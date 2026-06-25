@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -31,7 +30,7 @@ public class DocumentServiceImpl implements DocumentService {
         .orElseThrow(UnknownTemplateException::new);
     try (InputStream templateFile = minioRepository.download(documentProperties.templateBucket(), template.getPath())
         .orElseThrow(TemplateFileNotFoundException::new)) {
-      System.out.println(Arrays.toString(templateFile.readAllBytes()));
+      ;
     }
     catch (IOException e) {
       throw new RuntimeException(e);

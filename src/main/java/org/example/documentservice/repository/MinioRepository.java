@@ -13,6 +13,8 @@ import java.util.Optional;
 @Repository
 @RequiredArgsConstructor
 public class MinioRepository {
+  private static final long DOWNLOAD_PART_SIZE = 5242880L; // минимальный размер части - 5MiB
+
   private final MinioClient minioClient;
 
   public void upload(String bucketName, String fileName, InputStream inputStream) {
@@ -20,7 +22,7 @@ public class MinioRepository {
       minioClient.putObject(PutObjectArgs.builder()
           .bucket(bucketName)
           .object(fileName)
-          .stream(inputStream, null, 5242880L) // минимальный размер части - 5MiB
+          .stream(inputStream, null, DOWNLOAD_PART_SIZE)
           .build());
     }
     catch (Exception exception) {
