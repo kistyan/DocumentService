@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 public record WorkTableRow(
     @NotNull(message = "Отсутствует наименование работы")
-    String position,
+    String work,
 
     @NotNull(message = "Отсутствует тариф")
     @PositiveOrZero(message = "Тариф не может быть отрицательным")
