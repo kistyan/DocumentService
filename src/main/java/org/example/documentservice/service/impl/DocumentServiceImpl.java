@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
@@ -54,7 +56,7 @@ public class DocumentServiceImpl implements DocumentService {
         String path = String.format(PATH_FORMAT, id);
         Document document = new Document(id, template, path, LocalDate.now(zoneId));
         documentRepository.save(document);
-        minioRepository.upload(documentProperties.documentBucket(), path, content.getDocument().newInputStream());
+        minioRepository.upload(documentProperties.documentBucket(), path, getDocumentStream(content));
         return document;
       }
       catch (IOException exception) {
@@ -65,6 +67,12 @@ public class DocumentServiceImpl implements DocumentService {
       log.error("Ошибка при генерации документа", exception);
       throw exception;
     }
+  }
+
+  private InputStream getDocumentStream(XWPFDocument document) throws IOException {
+    ByteArrayOutputStream output = new ByteArrayOutputStream();
+    document.write(output);
+    return new ByteArrayInputStream(output.toByteArray());
   }
 
   @Override
