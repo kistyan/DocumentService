@@ -19,4 +19,4 @@ minio:
 document:
   template-bucket: ${TEMPLATE_BUCKET:templates}
   document-bucket: ${DOCUMENT_BUCKET:documents}
-  placeholder-regex: ${PLACEHOLDER_REGEX:"\\{\\{(\\w+):(\\w+)\\}\\}"}
+  placeholder-regex: ${PLACEHOLDER_REGEX:\{\{(\w+):(\w+)\}\}}

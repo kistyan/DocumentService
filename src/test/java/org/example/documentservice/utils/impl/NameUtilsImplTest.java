@@ -1,4 +1,4 @@
-package org.example.documentservice.utils;
+package org.example.documentservice.utils.impl;
 
 import com.github.petrovich4j.Case;
 import com.github.petrovich4j.NameType;
@@ -16,12 +16,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-class NameUtilsTest {
+class NameUtilsImplTest {
   @Mock
   private Petrovich petrovich;
 
   @InjectMocks
-  private NameUtils nameUtils;
+  private NameUtilsImpl nameUtils;
 
   @ParameterizedTest
   @CsvSource(

@@ -1,4 +1,4 @@
-package org.example.documentservice.utils;
+package org.example.documentservice.utils.impl;
 
 import com.ibm.icu.text.RuleBasedNumberFormat;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +16,7 @@ import java.text.DecimalFormat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
-class MoneyUtilsTest {
+class MoneyUtilsImplTest {
   @Mock
   private RuleBasedNumberFormat spellOutNumberFormat;
 
@@ -29,7 +29,7 @@ class MoneyUtilsTest {
   @Mock
   private ObjectProvider<DecimalFormat> rubleNumberFormatProvider;
 
-  private MoneyUtils moneyUtils;
+  private MoneyUtilsImpl moneyUtils;
 
   @BeforeEach
   void setUp() {
@@ -43,7 +43,7 @@ class MoneyUtilsTest {
     Mockito.when(rubleNumberFormatProvider.getObject())
         .thenReturn(rubleNumberFormat);
 
-    moneyUtils = new MoneyUtils(spellOutNumberFormatProvider, rubleNumberFormatProvider);
+    moneyUtils = new MoneyUtilsImpl(spellOutNumberFormatProvider, rubleNumberFormatProvider);
   }
 
   @ParameterizedTest
