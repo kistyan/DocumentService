@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2026-06-27-create-sequence-work-acceptance-act-number
+      author: kistyan
+      changes:
+        - createSequence:
+            sequenceName: work_acceptance_act_number
+            startValue: 1
+            incrementBy: 1
