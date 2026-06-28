@@ -13,7 +13,7 @@ import org.example.documentservice.exception.UnknownTemplateException;
 import org.example.documentservice.model.Document;
 import org.example.documentservice.model.Template;
 import org.example.documentservice.repository.DocumentRepository;
-import org.example.documentservice.repository.MinioRepository;
+import org.example.documentservice.service.MinioService;
 import org.example.documentservice.repository.TemplateRepository;
 import org.example.documentservice.service.DocumentService;
 import org.example.documentservice.utils.impl.DOCXGenerator;
@@ -39,7 +39,7 @@ public class DocumentServiceImpl implements DocumentService {
   private final DocumentProperties documentProperties;
   private final TemplateRepository templateRepository;
   private final DocumentRepository documentRepository;
-  private final MinioRepository minioRepository;
+  private final MinioService minioService;
   private final DOCXGenerator docxGenerator;
   private final ZoneId zoneId;
 
@@ -49,7 +49,7 @@ public class DocumentServiceImpl implements DocumentService {
   public Document generate(String templateName, Map<String, Object> data) {
     Template template = templateRepository.findById(templateName)
         .orElseThrow(UnknownTemplateException::new);
-    try (InputStream templateFile = minioRepository.download(documentProperties.templateBucket(), template.getPath())
+    try (InputStream templateFile = minioService.download(documentProperties.templateBucket(), template.getPath())
         .orElseThrow(TemplateFileNotFoundException::new);
          XWPFDocument content = new XWPFDocument(templateFile)) {
       docxGenerator.fillDocument(content, data);
@@ -57,7 +57,7 @@ public class DocumentServiceImpl implements DocumentService {
       String path = String.format(PATH_FORMAT, id);
       Document document = new Document(id, template, path, LocalDate.now(zoneId));
       documentRepository.save(document);
-      minioRepository.upload(documentProperties.documentBucket(), path, getDocumentStream(content));
+      minioService.upload(documentProperties.documentBucket(), path, getDocumentStream(content));
       return document;
     }
     catch (IOException exception) {
@@ -79,7 +79,7 @@ public class DocumentServiceImpl implements DocumentService {
     Document document = documentRepository.findById(id)
         .orElseThrow(DocumentNotFoundException::new);
     String path = document.getPath();
-    try (InputStream file = minioRepository.download(documentProperties.documentBucket(), path)
+    try (InputStream file = minioService.download(documentProperties.documentBucket(), path)
         .orElseThrow(DocumentFileNotFoundException::new)) {
       return file.readAllBytes();
     }

@@ -1,4 +1,4 @@
-package org.example.documentservice.repository.impl;
+package org.example.documentservice.service.impl;
 
 import io.minio.GetObjectArgs;
 import io.minio.MinioClient;
@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.documentservice.exception.MinioDownloadException;
 import org.example.documentservice.exception.MinioUploadException;
+import org.example.documentservice.service.MinioService;
 import org.springframework.stereotype.Repository;
 
 import java.io.InputStream;
@@ -16,7 +17,7 @@ import java.util.Optional;
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-public class MinioRepositoryImpl implements org.example.documentservice.repository.MinioRepository {
+public class MinioServiceImpl implements MinioService {
   private static final long DOWNLOAD_PART_SIZE = 5242880L; // минимальный размер части - 5MiB
 
   private final MinioClient minioClient;
