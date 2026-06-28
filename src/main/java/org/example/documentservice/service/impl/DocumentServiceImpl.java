@@ -6,6 +6,8 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.example.documentservice.configuration.DocumentProperties;
 import org.example.documentservice.exception.DocumentFileNotFoundException;
 import org.example.documentservice.exception.DocumentNotFoundException;
+import org.example.documentservice.exception.DocumentReadException;
+import org.example.documentservice.exception.DocumentWriteException;
 import org.example.documentservice.exception.TemplateFileNotFoundException;
 import org.example.documentservice.exception.UnknownTemplateException;
 import org.example.documentservice.model.Document;
@@ -45,54 +47,45 @@ public class DocumentServiceImpl implements DocumentService {
   @Transactional(
       propagation = Propagation.REQUIRES_NEW) // при ошибке во внешней транзакции не откатится запись о залитом файле
   public Document generate(String templateName, Map<String, Object> data) {
-    try {
-      Template template = templateRepository.findById(templateName)
-          .orElseThrow(UnknownTemplateException::new);
-      try (InputStream templateFile = minioRepository.download(documentProperties.templateBucket(), template.getPath())
-          .orElseThrow(TemplateFileNotFoundException::new)) {
-        XWPFDocument content = new XWPFDocument(templateFile);
-        docxGenerator.fillDocument(content, data);
-        UUID id = UUID.randomUUID();
-        String path = String.format(PATH_FORMAT, id);
-        Document document = new Document(id, template, path, LocalDate.now(zoneId));
-        documentRepository.save(document);
-        minioRepository.upload(documentProperties.documentBucket(), path, getDocumentStream(content));
-        return document;
-      }
-      catch (IOException exception) {
-        throw new RuntimeException(exception);
-      }
+    Template template = templateRepository.findById(templateName)
+        .orElseThrow(UnknownTemplateException::new);
+    try (InputStream templateFile = minioRepository.download(documentProperties.templateBucket(), template.getPath())
+        .orElseThrow(TemplateFileNotFoundException::new);
+         XWPFDocument content = new XWPFDocument(templateFile)) {
+      docxGenerator.fillDocument(content, data);
+      UUID id = UUID.randomUUID();
+      String path = String.format(PATH_FORMAT, id);
+      Document document = new Document(id, template, path, LocalDate.now(zoneId));
+      documentRepository.save(document);
+      minioRepository.upload(documentProperties.documentBucket(), path, getDocumentStream(content));
+      return document;
     }
-    catch (RuntimeException exception) {
-      log.error("Ошибка при генерации документа", exception);
-      throw exception;
+    catch (IOException exception) {
+      log.error("Ошибка записи документа", exception);
+      throw new DocumentWriteException();
     }
   }
 
   private InputStream getDocumentStream(XWPFDocument document) throws IOException {
-    ByteArrayOutputStream output = new ByteArrayOutputStream();
-    document.write(output);
-    return new ByteArrayInputStream(output.toByteArray());
+    try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
+      document.write(output);
+      return new ByteArrayInputStream(output.toByteArray());
+    }
   }
 
   @Override
   @Transactional
   public byte[] download(UUID id) {
-    try {
-      Document document = documentRepository.findById(id)
-          .orElseThrow(DocumentNotFoundException::new);
-      String path = document.getPath();
-      try (InputStream file = minioRepository.download(documentProperties.documentBucket(), path)
-          .orElseThrow(DocumentFileNotFoundException::new)) {
-        return file.readAllBytes();
-      }
-      catch (IOException exception) {
-        throw new RuntimeException(exception);
-      }
+    Document document = documentRepository.findById(id)
+        .orElseThrow(DocumentNotFoundException::new);
+    String path = document.getPath();
+    try (InputStream file = minioRepository.download(documentProperties.documentBucket(), path)
+        .orElseThrow(DocumentFileNotFoundException::new)) {
+      return file.readAllBytes();
     }
-    catch (RuntimeException exception) {
-      log.error("Ошибка при загрузке документа", exception);
-      throw exception;
+    catch (IOException exception) {
+      log.error("Ошибка чтения документа", exception);
+      throw new DocumentReadException();
     }
   }
 }
