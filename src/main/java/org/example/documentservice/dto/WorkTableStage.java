@@ -7,7 +7,6 @@ import java.util.List;
 
 public record WorkTableStage(
     @NotEmpty(message = "Отсутствуют работы в этапе таблицы работ")
-    @Valid
-    List<WorkTableRow> rows
+    List<@Valid WorkTableRow> rows
 ) {
 }

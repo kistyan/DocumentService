@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
-public record Document (
+public record DocumentReference(
     @NotNull(message = "Отсутствует номер документа")
     String number,
 

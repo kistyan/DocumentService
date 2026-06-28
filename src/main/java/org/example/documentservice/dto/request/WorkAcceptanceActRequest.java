@@ -4,29 +4,31 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import org.example.documentservice.dto.Document;
-import org.example.documentservice.dto.Organization;
+import jakarta.validation.constraints.PositiveOrZero;
+import org.example.documentservice.dto.DocumentReference;
+import org.example.documentservice.dto.OrganizationInfo;
 import org.example.documentservice.dto.WorkTable;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
 public record WorkAcceptanceActRequest(
     @NotNull(message = "Отсутствуют данные о договоре")
     @Valid
-    Document contract,
+    DocumentReference contract,
 
     @NotNull(message = "Отсутствуют данные о заявке")
     @Valid
-    Document request,
+    DocumentReference request,
 
     @NotNull(message = "Отсутствуют данные о заказчике")
     @Valid
-    Organization customer,
+    OrganizationInfo customer,
 
     @NotNull(message = "Отсутствуют данные об исполнителе")
     @Valid
-    Organization contractor,
+    OrganizationInfo contractor,
 
     @NotBlank(message = "Отсутствует название продукта")
     String product,
@@ -42,6 +44,10 @@ public record WorkAcceptanceActRequest(
 
     @NotNull(message = "Отсутствует таблица работ")
     @Valid
-    WorkTable workTable
+    WorkTable workTable,
+
+    @NotNull(message = "Отсутствует НДС")
+    @PositiveOrZero(message = "НДС не может быть отрицательным")
+    BigDecimal vatPercent
 ) {
 }

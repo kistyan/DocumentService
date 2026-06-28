@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/document-service/documents/download")
-public interface DocumentDownloadController {
-  @GetMapping("/{documentId}")
-  ResponseEntity<byte[]> download(@PathVariable UUID documentId);
+@RequestMapping("/api/v1/document-service/work-acceptance-acts/download")
+public interface WorkAcceptanceActDownloadController {
+  @GetMapping("/{id}")
+  ResponseEntity<byte[]> download(@PathVariable UUID id);
 }

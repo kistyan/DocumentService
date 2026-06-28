@@ -1,21 +1,33 @@
 package org.example.documentservice.handler;
 
-import org.example.documentservice.exception.TemplateFileNotFoundException;
-import org.example.documentservice.exception.UnknownTemplateException;
+import lombok.extern.slf4j.Slf4j;
+import org.example.documentservice.exception.BaseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-  @ExceptionHandler({
-      UnknownTemplateException.class,
-      TemplateFileNotFoundException.class
-  })
-  public ResponseEntity<String> handleNotFound(Exception exception) {
+  private ResponseEntity<String> handleException(Exception exception, HttpStatus status) {
+    log.warn("Ошибка обработки запроса", exception);
     return ResponseEntity
-        .status(HttpStatus.NOT_FOUND)
+        .status(status)
         .body(exception.getMessage());
+  }
+
+  @ExceptionHandler({
+      BaseException.class
+  })
+  public ResponseEntity<String> handleBaseException(BaseException exception) {
+    return handleException(exception, exception.getHttpStatus());
+  }
+
+  @ExceptionHandler({
+      Exception.class
+  })
+  public ResponseEntity<String> handleInternalServerError(Exception exception) {
+    return handleException(exception, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 }

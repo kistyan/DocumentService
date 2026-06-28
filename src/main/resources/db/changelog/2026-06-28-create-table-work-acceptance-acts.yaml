@@ -56,7 +56,7 @@ databaseChangeLog:
 
               - column:
                   name: customer_tin
-                  type: varchar
+                  type: bigint
                   constraints:
                     nullable: false
 
@@ -68,7 +68,7 @@ databaseChangeLog:
 
               - column:
                   name: contractor_tin
-                  type: varchar
+                  type: bigint
                   constraints:
                     nullable: false
 

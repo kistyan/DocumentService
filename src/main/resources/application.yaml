@@ -8,6 +8,9 @@ spring:
     username: ${DB_USER:user}
     password: ${DB_PASSWORD:password}
 
+  jpa:
+    open-in-view: false
+
   jackson:
     property-naming-strategy: SNAKE_CASE
 
@@ -20,3 +23,8 @@ document:
   template-bucket: ${TEMPLATE_BUCKET:templates}
   document-bucket: ${DOCUMENT_BUCKET:documents}
   placeholder-regex: ${PLACEHOLDER_REGEX:\{\{(\w+):(\w+)\}\}}
+
+work-acceptance-act:
+  list-delimiter: ${WORK_ACCEPTANCE_ACT_LIST_DELIMITER:;}
+  template-name: ${WORK_ACCEPTANCE_ACT_TEMPLATE_NAME:WORK_ACCEPTANCE_ACT}
+  name-format: ${WORK_ACCEPTANCE_ACT_NAME_FORMAT:Акт_сдачи-приёмки_работ_№%s.docx}
