@@ -57,10 +57,11 @@ class WorkAcceptanceActImplTest {
       .path("file.docx")
       .creationDate(LocalDate.EPOCH)
       .build();
+  private static final Long ACT_NUMBER = 1L;
   private static final WorkAcceptanceAct ACT = WorkAcceptanceAct.builder()
       .id(UUID.fromString("f999808d-a0d0-4594-8363-f52ba67d60d1"))
       .document(DOCUMENT)
-      .number("1")
+      .number(ACT_NUMBER.toString())
       .build();
   private static final WorkAcceptanceActProperties ACT_PROPERTIES = WorkAcceptanceActProperties.builder()
       .listDelimiter(";")
@@ -154,7 +155,7 @@ class WorkAcceptanceActImplTest {
           .build())
       .build();
   private static final Map<String, Object> DATA = Map.ofEntries(
-      Map.entry("act_number", "1"),
+      Map.entry("act_number", ACT_NUMBER.toString()),
 
       Map.entry("contract_number", "ABC"),
       Map.entry("contract_date", LocalDate.of(2022, 1, 10).format(DATE_FORMATTER)),
@@ -290,7 +291,7 @@ class WorkAcceptanceActImplTest {
 
   @Test
   void generate_shouldGenerateAndSaveAct() {
-    when(workAcceptanceActNumberRepository.nextValue()).thenReturn(1L);
+    when(workAcceptanceActNumberRepository.nextValue()).thenReturn(ACT_NUMBER);
 
     when(nameUtils.getGenitiveFullName("Геннадий", "Геннадьев", "Геннадиевич", Gender.MALE))
         .thenReturn("Геннадьева Геннадия Геннадиевича");
@@ -321,7 +322,7 @@ class WorkAcceptanceActImplTest {
 
   @Test
   void download_shouldReturnFileResponse() {
-    byte[] content = {1, 2, 3};
+    byte[] content = "test".getBytes();
 
     when(workAcceptanceActRepository.findById(ACT.getId()))
         .thenReturn(Optional.of(ACT));

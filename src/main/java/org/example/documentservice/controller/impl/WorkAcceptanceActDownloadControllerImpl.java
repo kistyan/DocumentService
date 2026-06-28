@@ -19,6 +19,8 @@ import java.util.UUID;
 @RequestMapping("/api/v1/document-service/work-acceptance-acts/download")
 @RequiredArgsConstructor
 public class WorkAcceptanceActDownloadControllerImpl implements WorkAcceptanceActDownloadController {
+  private static final MediaType DOCX_MEDIA_TYPE = MediaType
+      .parseMediaType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
   private final WorkAcceptanceActService workAcceptanceActService;
 
   @Override
@@ -30,8 +32,7 @@ public class WorkAcceptanceActDownloadControllerImpl implements WorkAcceptanceAc
         .build();
     return ResponseEntity.ok()
         .header(HttpHeaders.CONTENT_DISPOSITION, disposition.toString())
-        .contentType(MediaType
-            .parseMediaType("application/vnd.openxmlformats-officedocument.wordprocessingml.document"))
+        .contentType(DOCX_MEDIA_TYPE)
         .body(fileResponse.content());
   }
 }

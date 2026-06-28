@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/document-service/work-acceptance-acts")
 @RequiredArgsConstructor
-public class WorkAcceptanceActControllerImpl  implements WorkAcceptanceActController {
+public class WorkAcceptanceActControllerImpl implements WorkAcceptanceActController {
   private final WorkAcceptanceActService workAcceptanceActService;
 
   @Override

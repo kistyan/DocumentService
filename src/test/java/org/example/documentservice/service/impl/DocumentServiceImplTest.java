@@ -167,7 +167,7 @@ class DocumentServiceImplTest {
 
   @Test
   void download_shouldReturnBytes() {
-    byte[] content = {1, 2, 3};
+    byte[] content = "test".getBytes();
 
     when(documentRepository.findById(DOCUMENT.getId()))
         .thenReturn(Optional.of(DOCUMENT));
