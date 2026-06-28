@@ -2,10 +2,12 @@ package org.example.documentservice.dto;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
+import lombok.Builder;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+@Builder
 public record WorkTableRow(
     @NotNull(message = "Отсутствует наименование работы")
     String work,

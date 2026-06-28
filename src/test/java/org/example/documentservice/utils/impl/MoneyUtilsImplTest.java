@@ -6,7 +6,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.ObjectProvider;
 
@@ -14,6 +13,8 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.any;
 
 @ExtendWith(MockitoExtension.class)
 class MoneyUtilsImplTest {
@@ -33,14 +34,14 @@ class MoneyUtilsImplTest {
 
   @BeforeEach
   void setUp() {
-    Mockito.when(spellOutNumberFormat.format(Mockito.any(BigDecimal.class)))
+    when(spellOutNumberFormat.format(any(BigDecimal.class)))
         .thenReturn("пропись");
-    Mockito.when(spellOutNumberFormatProvider.getObject())
+    when(spellOutNumberFormatProvider.getObject())
         .thenReturn(spellOutNumberFormat);
 
-    Mockito.when(rubleNumberFormat.format(Mockito.any(BigDecimal.class)))
+    when(rubleNumberFormat.format(any(BigDecimal.class)))
         .thenAnswer(invocation -> invocation.getArgument(0).toString());
-    Mockito.when(rubleNumberFormatProvider.getObject())
+    when(rubleNumberFormatProvider.getObject())
         .thenReturn(rubleNumberFormat);
 
     moneyUtils = new MoneyUtilsImpl(spellOutNumberFormatProvider, rubleNumberFormatProvider);

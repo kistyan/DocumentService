@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
+import lombok.Builder;
 import org.example.documentservice.dto.DocumentReference;
 import org.example.documentservice.dto.OrganizationInfo;
 import org.example.documentservice.dto.WorkTable;
@@ -13,6 +14,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+@Builder
 public record WorkAcceptanceActRequest(
     @NotNull(message = "Отсутствуют данные о договоре")
     @Valid

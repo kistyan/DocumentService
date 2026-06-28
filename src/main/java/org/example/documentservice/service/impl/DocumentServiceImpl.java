@@ -55,7 +55,12 @@ public class DocumentServiceImpl implements DocumentService {
       docxGenerator.fillDocument(content, data);
       UUID id = UUID.randomUUID();
       String path = String.format(PATH_FORMAT, id);
-      Document document = new Document(id, template, path, LocalDate.now(zoneId));
+      Document document = Document.builder()
+          .id(id)
+          .template(template)
+          .path(path)
+          .creationDate(LocalDate.now(zoneId))
+          .build();
       documentRepository.save(document);
       minioService.upload(documentProperties.documentBucket(), path, getDocumentStream(content));
       return document;

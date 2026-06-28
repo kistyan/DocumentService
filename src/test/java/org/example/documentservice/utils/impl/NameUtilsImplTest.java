@@ -10,10 +10,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class NameUtilsImplTest {
@@ -48,11 +48,11 @@ class NameUtilsImplTest {
     com.github.petrovich4j.Gender genderValue = gender.getGender();
     String expected = "Альшаева Константина Николаевича";
 
-    Mockito.when(petrovich.say(lastName, NameType.LastName, genderValue, Case.Genitive))
+    when(petrovich.say(lastName, NameType.LastName, genderValue, Case.Genitive))
         .thenReturn("Альшаева");
-    Mockito.when(petrovich.say(firstName, NameType.FirstName, genderValue, Case.Genitive))
+    when(petrovich.say(firstName, NameType.FirstName, genderValue, Case.Genitive))
         .thenReturn("Константина");
-    Mockito.when(petrovich.say(patronymic, NameType.PatronymicName, genderValue, Case.Genitive))
+    when(petrovich.say(patronymic, NameType.PatronymicName, genderValue, Case.Genitive))
         .thenReturn("Николаевича");
 
     String actual = nameUtils.getGenitiveFullName(
@@ -72,9 +72,9 @@ class NameUtilsImplTest {
     com.github.petrovich4j.Gender genderValue = gender.getGender();
     String expected = "Альшаева Константина";
 
-    Mockito.when(petrovich.say(lastName, NameType.LastName, genderValue, Case.Genitive))
+    when(petrovich.say(lastName, NameType.LastName, genderValue, Case.Genitive))
         .thenReturn("Альшаева");
-    Mockito.when(petrovich.say(firstName, NameType.FirstName, genderValue, Case.Genitive))
+    when(petrovich.say(firstName, NameType.FirstName, genderValue, Case.Genitive))
         .thenReturn("Константина");
 
     String actual = nameUtils.getGenitiveFullName(
