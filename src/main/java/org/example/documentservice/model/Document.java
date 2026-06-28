@@ -1,5 +1,6 @@
 package org.example.documentservice.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -29,7 +30,9 @@ public class Document {
   @JoinColumn(name = "template_name", referencedColumnName = "name", nullable = false)
   private Template template;
 
+  @Column(nullable = false)
   private String path;
 
+  @Column(nullable = false)
   private LocalDate creationDate;
 }

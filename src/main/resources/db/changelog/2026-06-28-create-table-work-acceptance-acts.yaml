@@ -1,0 +1,85 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2026-06-28-create-table-work-acceptance-acts
+      author: kistyan
+      changes:
+        - createTable:
+            tableName: work_acceptance_acts
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_work_acceptance_acts
+                    nullable: false
+
+              - column:
+                  name: document_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    unique: true
+                    foreignKeyName: fk_work_acceptance_acts_documents
+                    referencedTableName: documents
+                    referencedColumnNames: id
+
+              - column:
+                  name: number
+                  type: varchar
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: date
+                  type: date
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: contract_number
+                  type: varchar
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: request_number
+                  type: varchar
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: customer_name
+                  type: varchar
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: customer_tin
+                  type: varchar
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: contractor_name
+                  type: varchar
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: contractor_tin
+                  type: varchar
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: product
+                  type: varchar
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: total_amount
+                  type: decimal(19,2)
+                  constraints:
+                    nullable: false

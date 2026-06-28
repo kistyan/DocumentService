@@ -10,3 +10,6 @@ databaseChangeLog:
 
   - include:
       file: db/changelog/2026-06-27-create-sequence-work-acceptance-act-number.yaml
+
+  - include:
+      file: db/changelog/2026-06-28-create-table-work-acceptance-acts.yaml
