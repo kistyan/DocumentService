@@ -11,7 +11,6 @@ import org.example.documentservice.dto.OrganizationInfo;
 import org.example.documentservice.dto.WorkTable;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.List;
 
 @Builder
@@ -37,12 +36,6 @@ public record WorkAcceptanceActRequest(
 
     @NotEmpty(message = "Отсутствуют выполненные работы")
     List<String> works,
-
-    @NotNull(message = "Отсутствует дата начала выполнения работ")
-    LocalDate startDate,
-
-    @NotNull(message = "Отсутствует дата окончания выполнения работ")
-    LocalDate endDate,
 
     @NotNull(message = "Отсутствует таблица работ")
     @Valid

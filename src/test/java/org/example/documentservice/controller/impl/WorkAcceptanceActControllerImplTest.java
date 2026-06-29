@@ -62,8 +62,6 @@ public class WorkAcceptanceActControllerImplTest {
               .build())
           .build())
       .product("Классная система")
-      .startDate(LocalDate.of(2025, 5, 1))
-      .endDate(LocalDate.of(2025, 5, 31))
       .works(List.of(
           "Сделал экран",
           "Сделал кнопку",

@@ -98,8 +98,6 @@ class WorkAcceptanceActImplTest {
               .build())
           .build())
       .product("Классная система")
-      .startDate(LocalDate.of(2025, 5, 1))
-      .endDate(LocalDate.of(2025, 5, 31))
       .works(List.of(
           "Сделал экран",
           "Сделал кнопку",
@@ -175,8 +173,8 @@ class WorkAcceptanceActImplTest {
 
       Map.entry("product", "Классная система"),
 
-      Map.entry("start_date", LocalDate.of(2025, 5, 1).format(DATE_FORMATTER)),
-      Map.entry("end_date", LocalDate.of(2025, 5, 31).format(DATE_FORMATTER)),
+      Map.entry("start_date", LocalDate.of(2025, 4, 1).format(DATE_FORMATTER)),
+      Map.entry("end_date", LocalDate.of(2025, 6, 30).format(DATE_FORMATTER)),
 
       Map.entry("works", List.of(
           "Сделал экран;",

@@ -103,12 +103,11 @@ public class WorkAcceptanceActServiceImpl implements WorkAcceptanceActService {
 
     data.put("product", request.product());
 
-    data.put("start_date", request.startDate().format(dateFormatter));
-    data.put("end_date", request.endDate().format(dateFormatter));
-
     fillWorks(data, request.works());
-    BigDecimal totalAmount = fillStages(data, request.workTable().stages());
 
+    List<WorkTableStage> stages = request.workTable().stages();
+    fillDates(data, stages);
+    BigDecimal totalAmount = fillStages(data, stages);
     return fillTotalWithVat(data, totalAmount, request.vatPercent());
   }
 
@@ -139,6 +138,22 @@ public class WorkAcceptanceActServiceImpl implements WorkAcceptanceActService {
       worksData.add(works.get(i) + (i < works.size() - 1 ? workAcceptanceActProperties.listDelimiter() : "."));
     }
     data.put("works", worksData);
+  }
+
+  private void fillDates(Map<String, Object> data, List<WorkTableStage> stages) {
+    LocalDate startDate = null, endDate = null;
+    for (WorkTableStage stage : stages) {
+      for (WorkTableRow row : stage.rows()) {
+        if (startDate == null || row.startDate().isBefore(startDate)) {
+          startDate = row.startDate();
+        }
+        if (endDate == null || row.endDate().isAfter(endDate)) {
+          endDate = row.endDate();
+        }
+      }
+    }
+    data.put("start_date", startDate.format(dateFormatter));
+    data.put("end_date", endDate.format(dateFormatter));
   }
 
   private BigDecimal fillStages(Map<String, Object> data, List<WorkTableStage> stages) {
