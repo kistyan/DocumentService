@@ -1,6 +1,6 @@
 package org.example.documentservice.exception;
 
-public class UnknownTemplateException extends NotFoundException {
+public class UnknownTemplateException extends InternalServerErrorException {
   public static final String DEFAULT_MESSAGE = "Неизвестный шаблон";
 
   public UnknownTemplateException(String message) {

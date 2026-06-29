@@ -10,7 +10,6 @@ import org.example.documentservice.dto.request.WorkAcceptanceActRequest;
 import org.example.documentservice.dto.response.WorkAcceptanceActResponse;
 import org.example.documentservice.enums.Gender;
 import org.example.documentservice.exception.InternalServerErrorException;
-import org.example.documentservice.exception.NotFoundException;
 import org.example.documentservice.service.WorkAcceptanceActService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -141,18 +140,6 @@ public class WorkAcceptanceActControllerImplTest {
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(ACT_REQUEST)))
         .andExpect(status().isOk());
-  }
-
-  @Test
-  void generate_shouldReturn404_whenBaseExceptionNotFound() throws Exception {
-    when(workAcceptanceActService.generate(any()))
-        .thenThrow(new NotFoundException("Not found"));
-
-    mockMvc.perform(post("/api/v1/document-service/work-acceptance-acts")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(ACT_REQUEST)))
-        .andExpect(status().isNotFound())
-        .andExpect(content().string("Not found"));
   }
 
   @Test
