@@ -34,6 +34,36 @@
 
 ---
 
+## Структура проекта
+
+```text
+src/main/java/org/example/documentservice/
+    configuration/  # Классы конфигурацций и проперти
+    controller/     # REST контроллеры
+    dto/            # Data Transfer объекты
+    enums/          # Классы перечислений
+    exception/      # Классы исключений
+    handler/        # Глобальный обработчик исключений
+    mapper/         # Классы мапперов
+    model/          # Сущности БД
+    repository/     # Классы репозиториев БД
+    service/        # Бизнес-логика
+    strategy/       # Классы стратегий заполнения документа и замены плейсхолдеров
+    utils/          # Утилитарные классы
+    DocumentServiceApplication.java
+src/main/resources/
+    db/changelog/   # Миграции БД
+    application.yaml
+src/test/java/org/example/documentservice/
+    controller/     # Тесты контроллеров
+    service/        # Тесты бизнес-логики
+    utils/          # Тесты утилитарных классов
+    DocumentServiceApplicationTests.java
+pom.xml
+```
+
+---
+
 ## Быстрый запуск
 
 ### Требования
@@ -55,7 +85,7 @@ cd DocumentService
 docker compose up -d
 ```
 
-### 4. Запуск приложения
+### 3. Запуск приложения
 
 Из IDE или командой:
 
@@ -307,36 +337,36 @@ DOCX-файл.
 
 ### templates
 
-| Поле | Тип     |
-| ---- | ------- |
-| name | varchar |
-| path | varchar |
+| Поле | Тип     | Ключ | Описание                       |
+| ---- | ------- |------|--------------------------------|
+| name | varchar | PK   | Имя шаблона                    |
+| path | varchar |      | Путь к файлу в бакете шаблонов |
 
 ### documents
 
-| Поле          | Тип       |
-| ------------- | --------- |
-| id            | uuid      |
-| template_name | varchar   |
-| path          | varchar   |
-| creation_date | timestamp |
+| Поле          | Тип       | Ключ                | Описание                         |
+| ------------- | --------- |---------------------|----------------------------------|
+| id            | uuid      | PK                  | Идентификатор документа          |
+| template_name | varchar   | FK → templates.name | Имя шаблона                      |
+| path          | varchar   |                     | Путь к файлу в бакете документов |
+| creation_date | timestamp |                     | Дата создания                    |
 
 ### work_acceptance_acts
 
-| Поле            | Тип           |
-| --------------- | ------------- |
-| id              | uuid          |
-| document_id     | uuid          |
-| number          | varchar       |
-| date            | date          |
-| contract_number | varchar       |
-| request_number  | varchar       |
-| customer_name   | varchar       |
-| customer_tin    | bigint        |
-| contractor_name | varchar       |
-| contractor_tin  | bigint        |
-| product         | varchar       |
-| total_amount    | decimal(19,2) |
+| Поле            | Тип           | Ключ              | Описание                 |
+| --------------- | ------------- |-------------------|--------------------------|
+| id              | uuid          | PK                | Идентификатор акта       |
+| document_id     | uuid          | FK → documents.id | Идентификатор документа  |
+| number          | varchar       |                   | Номер акта               |
+| date            | date          |                   | Дата акта                |
+| contract_number | varchar       |                   | Номер договора           |
+| request_number  | varchar       |                   | Номер заявки             |
+| customer_name   | varchar       |                   | Наименование заказчика   |
+| customer_tin    | bigint        |                   | ИНН заказчика            |
+| contractor_name | varchar       |                   | Наименование исполнителя |
+| contractor_tin  | bigint        |                   | ИНН исполнителя          |
+| product         | varchar       |                   | Наименование продукта    |
+| total_amount    | decimal(19,2) |                   | Общая стоимость работ    |
 
 ---
 
@@ -353,39 +383,9 @@ DOCX-файл.
 2. Генерирует документ.
 3. Сохраняет результат в бакет документов.
 
-Название бакетов может быть настроено через свойства приложения или переменные окружения.
+Названия бакетов могут быть настроены через свойства приложения или переменные окружения.
 
 | Свойство                 | Переменная окружения | Значение по умолчанию |
 | ------------------------ | -------------------- | --------------------- |
 | document.template-bucket | TEMPLATE_BUCKET      | templates             |
 | document.document-bucket | DOCUMENT_BUCKET      | documents             |
-
----
-
-## Структура проекта
-
-```text
-src/main/java/org/example/documentservice/
-    configuration/  # Классы конфигурацций и проперти
-    controller/     # REST контроллеры
-    dto/            # Data Transfer объекты
-    enums/          # Классы перечислений
-    exception/      # Классы исключений
-    handler/        # Глобальный обработчик исключений
-    mapper/         # Классы мапперов
-    model/          # Сущности БД
-    repository/     # Классы репозиториев БД
-    service/        # Бизнес-логика
-    strategy/       # Классы стратегий заполнения документа и замены плейсхолдеров
-    utils/          # Утилитарные классы
-    DocumentServiceApplication.java
-src/main/resources/
-    db/changelog/   # Миграции БД
-    application.yaml
-src/test/java/org/example/documentservice/
-    controller/     # Тесты контроллеров
-    service/        # Тесты сервисов
-    utils/          # Тесты утилитарных классов
-    DocumentServiceApplicationTests.java
-pom.xml
-```
